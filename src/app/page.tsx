@@ -244,13 +244,13 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-slate-800 text-slate-300 py-4 px-4">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
-          <p>© 2024 PensionVox Chile - Asesoría Previsional</p>
+          <p>© 2024 Luis Barría Chodil - Cod. 1360 SPensiones</p>
           <div className="flex items-center gap-4">
-            <a href="tel:+56912345678" className="hover:text-white transition-colors">
-              📞 +56 9 1234 5678
+            <a href="https://wa.me/56934460825" className="hover:text-white transition-colors">
+              📱 +56 9 3446 0825
             </a>
-            <a href="mailto:contacto@pensionvox.cl" className="hover:text-white transition-colors">
-              ✉️ contacto@pensionvox.cl
+            <a href="mailto:luis.barria@asesoriapensiones.cl" className="hover:text-white transition-colors">
+              ✉️ luis.barria@asesoriapensiones.cl
             </a>
           </div>
         </div>

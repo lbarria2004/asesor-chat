@@ -1,0 +1,16 @@
+(function($){'use strict';let isOpen=false,messages=[],count=0,sent=false;
+$(function(){init();});
+function init(){$('#ap-btn').click(toggle);$('#ap-notification').click(open);$('#ap-send').click(send);$('#ap-input input').keydown(function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});$('#ap-quick button').click(function(){sendQuick($(this).data('q'));});$('#ap-modal form').submit(submitLead);$('#ap-ask-lead').click(function(){$('#ap-modal').addClass('open');});$('#ap-modal .cancel').click(function(){$('#ap-modal').removeClass('open');});}
+function toggle(){isOpen?close():open();}
+function open(){isOpen=true;$('#ap-btn').addClass('open');$('#ap-chat').addClass('open');$('#ap-notification').addClass('hide');if(!messages.length)greet();$('#ap-input input').focus();}
+function close(){isOpen=false;$('#ap-btn').removeClass('open');$('#ap-chat').removeClass('open');}
+function greet(){add('assistant','¡Hola! 👋 Soy el Asesor Previsional Virtual. ¿En qué puedo ayudarte hoy?');}
+function send(){let m=$('#ap-input input').val().trim();if(!m)return;$('#ap-input input').val('');add('user',m);count++;if(count>=2&&!sent)$('#ap-lead').show();showTyping();$.post(asesorPrevisional.ajaxUrl,{action:'ap_chat',nonce:asesorPrevisional.nonce,messages:JSON.stringify(messages),isNew:count===1?'true':'false'},function(r){hideTyping();if(r.success&&r.data&&r.data.message)add('assistant',r.data.message);else add('assistant','¿Te gustaría que un asesor te contacte?');});}
+function sendQuick(q){$('#ap-input input').val(q);send();}
+function add(role,text){messages.push({role:role,content:text});let t=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});let icon=role==='assistant'?'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="#fff" fill="none"/>':'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>';$('#ap-messages').append('<div class="msg '+role+'"><div class="msg-avatar"><svg viewBox="0 0 24 24">'+icon+'</svg></div><div class="msg-text">'+escapeHtml(text)+'</div></div>');scroll();}
+function showTyping(){$('#ap-messages').append('<div class="msg assistant typing-msg"><div class="msg-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="#fff" fill="none"/></svg></div><div class="msg-text"><div class="typing"><span></span><span></span><span></span></div></div></div>');scroll();}
+function hideTyping(){$('.typing-msg').remove();}
+function scroll(){$('#ap-messages').scrollTop($('#ap-messages')[0].scrollHeight);}
+function submitLead(e){e.preventDefault();let $f=$(this);$f.find('.submit').prop('disabled',true).text('Enviando...');$.post(asesorPrevisional.ajaxUrl,{action:'ap_save_lead',nonce:asesorPrevisional.nonce,name:$f.find('[name=name]').val(),phone:$f.find('[name=phone]').val(),email:$f.find('[name=email]').val()},function(r){if(r.success){sent=true;$('#ap-modal').removeClass('open');$('#ap-lead').hide();add('assistant','¡Perfecto! Luis Barría te contactará pronto. ¿Algo más en lo que pueda ayudarte?');}else alert(r.data?.message||'Error');$f.find('.submit').prop('disabled',false).text('Solicitar');});}
+function escapeHtml(t){let d=document.createElement('div');d.textContent=t;return d.innerHTML.replace(/\n/g,'<br>');}
+})(jQuery);

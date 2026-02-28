@@ -13,10 +13,10 @@ export function Header() {
             </div>
             <div>
               <h1 className="text-xl md:text-2xl font-bold tracking-tight">
-                PensionVox Chile
+                Asesor Previsional Virtual
               </h1>
               <p className="text-xs md:text-sm text-slate-300">
-                Asesoría Previsional Experta
+                Luis Barría Chodil • Cod. 1360 SPensiones
               </p>
             </div>
           </div>
@@ -26,10 +26,10 @@ export function Header() {
               <span className="text-emerald-300 font-medium">En línea</span>
             </div>
             <a 
-              href="tel:+56912345678" 
+              href="tel:+56934460825" 
               className="text-slate-300 hover:text-white transition-colors"
             >
-              +56 9 1234 5678
+              +56 9 3446 0825
             </a>
           </div>
         </div>
